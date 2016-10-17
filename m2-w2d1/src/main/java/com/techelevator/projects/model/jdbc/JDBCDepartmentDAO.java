@@ -66,7 +66,7 @@ public class JDBCDepartmentDAO implements DepartmentDAO {
 		
 		jdbcTemplate.update(sqlUpdateDepartment, departmentId);
 	}
-
+	
 	@Override
 	public Department createDepartment(String departmentName) {
 		Department newDept = new Department();
@@ -100,3 +100,6 @@ public class JDBCDepartmentDAO implements DepartmentDAO {
 	}
 
 }
+
+
+

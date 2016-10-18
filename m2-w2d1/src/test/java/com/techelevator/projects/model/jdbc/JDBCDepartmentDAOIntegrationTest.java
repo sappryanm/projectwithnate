@@ -3,9 +3,11 @@ package com.techelevator.projects.model.jdbc;
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,6 +16,8 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 import com.techelevator.projects.model.Department;
 import com.techelevator.projects.model.DepartmentDAO;
+
+
 
 public class JDBCDepartmentDAOIntegrationTest {
 	
@@ -74,5 +78,29 @@ public class JDBCDepartmentDAOIntegrationTest {
 		assertNotNull(foundDepartment);
 		assertEquals(savedDepartment.getId(), foundDepartment.getId());
 		assertEquals(savedDepartment.getName(), foundDepartment.getName());
+	}
+	
+	@Test
+	public void get_all_departments_gets_all_departments() {
+		int beforeCount = (dao.getAllDepartments()).size();
+		dao.createDepartment("Test Department");
+		int afterCount = (dao.getAllDepartments()).size(); 
+		
+		Assert.assertEquals(afterCount, beforeCount + 1);
+	}
+	
+	@Test 
+	public void update_name_updates_correctly() {
+		dao.updateDepartmentName((long) 1, "Test");
+		List<Department> testDeptList = dao.searchDepartmentsByName("Test");
+		String testDeptName = (testDeptList.get(0)).getName();
+		Assert.assertEquals(testDeptName, "Test");
+	} 
+	
+	@Test
+	public void search_for_non_exists_id_returns_null_dept() {
+		Department nullDept = dao.getDepartmentById((long) -1);
+		String name = nullDept.getName();
+		Assert.assertNull(name);
 	}
 }

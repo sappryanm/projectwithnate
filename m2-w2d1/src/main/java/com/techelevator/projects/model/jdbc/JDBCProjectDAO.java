@@ -26,7 +26,7 @@ public class JDBCProjectDAO implements ProjectDAO {
 		
 		String query = "SELECT name, project_id " +
 					   "FROM project " +
-					   "WHERE from_date IS NOT NULL AND to_date IS NULL";
+					   "WHERE from_date IS NOT NULL AND (to_date > now() OR to_date IS NULL)";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(query);
 		
 		while (results.next()) {

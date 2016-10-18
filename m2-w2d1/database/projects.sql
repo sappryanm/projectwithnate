@@ -79,7 +79,7 @@ INSERT INTO project_employee (project_id, employee_id) VALUES (1, 5);
 INSERT INTO project_employee (project_id, employee_id) VALUES (3, 1);
 INSERT INTO project_employee (project_id, employee_id) VALUES (3, 5);
 INSERT INTO project_employee (project_id, employee_id) VALUES (3, 7);
-INSERT INTO project_employee (project_id, employee_id) VALUES (4, 2);
+INSERT INTO project_employee (project_id, employee_id) VALUES (4, 2);s
 INSERT INTO project_employee (project_id, employee_id) VALUES (4, 6);
 INSERT INTO project_employee (project_id, employee_id) VALUES (5, 8);
 INSERT INTO project_employee (project_id, employee_id) VALUES (5, 9);

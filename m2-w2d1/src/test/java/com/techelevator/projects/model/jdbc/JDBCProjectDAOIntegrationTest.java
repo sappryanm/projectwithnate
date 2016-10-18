@@ -80,7 +80,29 @@ public class JDBCProjectDAOIntegrationTest {
 		template.update(query);
 		int afterCount = dao.getAllActiveProjects().size();
 		Assert.assertEquals(afterCount, beforeCount + 1);
-	}	
+	}
+	
+	@Test
+	public void get_all_active_projects_with_null_from_date() {
+		int beforeCount = dao.getAllActiveProjects().size();
+		String query = "INSERT INTO project (name)" +
+					   "VALUES ('test project')";
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		template.update(query);
+		int afterCount = dao.getAllActiveProjects().size();
+		Assert.assertEquals(afterCount, beforeCount);
+	}
+	
+	@Test
+	public void get_project_with_to_date_in_the_future() {
+		int beforeCount = dao.getAllActiveProjects().size();
+		String query = "INSERT INTO project (name, from_date, to_date)" +
+					   "VALUES ('test project', '2014-10-01', '9999-12-30')";
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		template.update(query);
+		int afterCount = dao.getAllActiveProjects().size();
+		Assert.assertEquals(afterCount, beforeCount + 1);
+	}
 }
 
 

@@ -1,0 +1,77 @@
+package com.techelevator;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
+import javax.sql.DataSource;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+
+public class JDBCCampgroundDAOIntegrationTest {
+
+	/* Using this particular implementation of DataSource so that
+	 * every database interaction is part of the same database
+	 * session and hence the same database transaction */
+	private static SingleConnectionDataSource dataSource;
+	private CampgroundDAO dao;
+	
+	/* Before any tests are run, this method initializes the datasource for testing. */
+	@BeforeClass
+	public static void setupDataSource() {
+		dataSource = new SingleConnectionDataSource();
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
+		dataSource.setUsername("postgres");
+		dataSource.setPassword("postgres1");
+		/* The following line disables autocommit for connections 
+		 * returned by this DataSource. This allows us to rollback
+		 * any changes after each test */
+		dataSource.setAutoCommit(false);
+	}
+	 
+	/* After all tests have finished running, this method will close the DataSource */
+	@AfterClass
+	public static void closeDataSource() throws SQLException {
+		dataSource.destroy();
+	}
+
+	@Before
+	public void setup() {
+		String query = "INSERT INTO campground ( park_id, name, open_from_mm, open_to_mm, daily_fee ) " +
+							"VALUES (?, ?, ?, ?, ?)";
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		template.update(query, 1, "camp", "01", "12", new BigDecimal(1.00)); 
+		dao = new JDBCCampgroundDAO(dataSource);
+	}
+	
+	/* After each test, we rollback any changes that were made to the database so that
+	 * everything is clean for the next test */
+	@After
+	public void rollback() throws SQLException {
+		dataSource.getConnection().rollback();
+	}
+	
+	/* This method provides access to the DataSource for subclasses so that 
+	 * they can instantiate a DAO for testing */
+	protected DataSource getDataSource() {
+		return dataSource;
+	}
+	
+	@Test
+	public void get_all_campground_by_park() {
+		int beforeCount = (dao.getAllCampgroundsByPark()).size();
+		String query = "INSERT INTO campground ( park_id, name, open_from_mm, open_to_mm, daily_fee ) " +
+					   "VALUES (?, ?, ?, ?, ?)";
+		JdbcTemplate template = new JdbcTemplate(dataSource);
+		template.update(query, 1, "camp", "01", "12", new BigDecimal(1.00));
+		int afterCount = (dao.getAllCampgroundsByPark()).size();
+		Assert.assertEquals(afterCount, beforeCount + 1);
+	}
+}

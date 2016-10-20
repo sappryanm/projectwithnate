@@ -16,7 +16,7 @@ import com.techelevator.projects.model.jdbc.JDBCEmployeeDAO;
 import com.techelevator.projects.model.jdbc.JDBCProjectDAO;
 import com.techelevator.projects.view.Menu;
 
-public class ProjectsCLI {
+public class ProjectsCLI { 
 	
 	private static final String MAIN_MENU_OPTION_EMPLOYEES = "Employees";
 	private static final String MAIN_MENU_OPTION_DEPARTMENTS = "Departments";

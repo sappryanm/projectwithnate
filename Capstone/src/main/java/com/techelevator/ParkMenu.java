@@ -1,16 +1,16 @@
-package com.techelevator.projects.view;
-
+package com.techelevator;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class Menu { 
+
+public class ParkMenu {
 
 	private PrintWriter out;
 	private Scanner in;
 
-	public Menu(InputStream input, OutputStream output) {
+	public ParkMenu(InputStream input, OutputStream output) {
 		this.out = new PrintWriter(output);
 		this.in = new Scanner(input);
 	}
@@ -30,7 +30,7 @@ public class Menu {
 		try {
 			int selectedOption = Integer.valueOf(userInput);
 			if(selectedOption <= options.length) {
-				choice = options[selectedOption - 1];
+				choice = options[selectedOption];
 			}
 		} catch(NumberFormatException e) {
 			// eat the exception, an error message will be displayed below since choice will be null
@@ -43,11 +43,12 @@ public class Menu {
 
 	private void displayMenuOptions(Object[] options) {
 		out.println();
-		for(int i = 0; i < options.length; i++) {
-			int optionNum = i+1;
-			out.println(optionNum+") "+options[i]);
+		for(int i = 1; i < options.length; i++) {
+			out.println(i + ") " + options[i]);
 		}
 		out.print("\nPlease choose an option >>> ");
-		out.flush();
+			out.flush();
 	}
 }
+
+

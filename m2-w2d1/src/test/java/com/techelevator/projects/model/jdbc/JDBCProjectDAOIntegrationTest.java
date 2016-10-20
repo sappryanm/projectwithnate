@@ -104,24 +104,3 @@ public class JDBCProjectDAOIntegrationTest {
 		Assert.assertEquals(afterCount, beforeCount + 1);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,5 +3,6 @@ package com.techelevator;
 import java.util.List;
 
 public interface CampgroundDAO {
-	public List<Campground> getAllCampgroundsByPark();
+	public List<Campground> getAllCampgrounds();
+	public List<Campground> findCampgroundByPark(String parkChoice);
 }

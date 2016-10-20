@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
@@ -13,12 +14,12 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 
 	JdbcTemplate jdbcTemplate;
 	
-	public JDBCCampgroundDAO(SingleConnectionDataSource dataSource) {
+	public JDBCCampgroundDAO(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	@Override
-	public List<Campground> getAllCampgroundsByPark() { 
+	@Override 
+	public List<Campground> getAllCampgrounds() { 
 		List<Campground> campgroundList = new ArrayList<Campground>();
 		
 		String query = "SELECT * FROM campground " + 
@@ -29,6 +30,20 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		}
 		return campgroundList;
 	}
+	
+	@Override
+	public List<Campground> findCampgroundByPark(String parkChoice) {
+		List<Campground> foundByName = new ArrayList<Campground>();
+		String query = "SELECT * " + 
+					   "FROM campground cg " +
+					   "INNER JOIN park p ON p.park_id = cg.park_id " +
+					   "WHERE p.name = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(query, parkChoice);
+		while (results.next()) {
+			foundByName.add(saveDataAsCampground(results));
+		}
+		return foundByName;
+	}
 	  
 	private Campground saveDataAsCampground(SqlRowSet results) {
 		Campground campground = new Campground();
@@ -38,7 +53,8 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		campground.setOpenTo(results.getString("open_to_mm"));
 		campground.setDailyFee((results.getBigDecimal("daily_fee"))); 
 		return campground;
-	} 
+	}
+ 
 	
 	
 }

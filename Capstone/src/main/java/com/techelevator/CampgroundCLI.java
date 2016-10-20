@@ -1,6 +1,7 @@
 package com.techelevator;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 public class CampgroundCLI {
 
 	private NationalParkDAO nationalParkDAO;
+	private CampgroundDAO campgroundDAO;
 	private ParkMenu menu;
 	
 	private static final String MAIN_MENU_HEADING = "Welcome to the National Park Campground Finder";
@@ -32,6 +34,7 @@ public class CampgroundCLI {
 	public CampgroundCLI(DataSource dataSource) {
 		this.menu = new ParkMenu(System.in, System.out);
 		nationalParkDAO = new JDBCNationalParkDAO(dataSource);
+		campgroundDAO = new JDBCCampgroundDAO(dataSource);
 	}
 	
 	public void run() {
@@ -45,7 +48,7 @@ public class CampgroundCLI {
 				System.out.println();
 				for (NationalPark park : parkSearchList) {
 					System.out.println(park.getName());
-				}
+				} 
 			}
 			else if (choice == MAIN_SEARCH_FOR_CAMPGROUNDS_BY_PARK) {
 				List<NationalPark> campgroundSearchList = nationalParkDAO.getAllParksInSystem();
@@ -56,9 +59,12 @@ public class CampgroundCLI {
 				}
 				printHeading(parksInSystem);
 				String parkChoice = (String)menu.getChoiceFromOptions(parksInSystem);
+				campgroundDAO.findCampgroundByPark(parkChoice);
 			}
 		}
 	}
+	
+	
 	 
 	
 	

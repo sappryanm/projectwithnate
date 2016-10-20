@@ -66,12 +66,12 @@ public class JDBCCampgroundDAOIntegrationTest {
 	
 	@Test
 	public void get_all_campground_by_park() {
-		int beforeCount = (dao.getAllCampgroundsByPark()).size();
+		int beforeCount = (dao.getAllCampgrounds()).size();
 		String query = "INSERT INTO campground ( park_id, name, open_from_mm, open_to_mm, daily_fee ) " +
 					   "VALUES (?, ?, ?, ?, ?)";
 		JdbcTemplate template = new JdbcTemplate(dataSource);
 		template.update(query, 1, "camp", "01", "12", new BigDecimal(1.00));
-		int afterCount = (dao.getAllCampgroundsByPark()).size();
+		int afterCount = (dao.getAllCampgrounds()).size();
 		Assert.assertEquals(afterCount, beforeCount + 1);
 	}
 }

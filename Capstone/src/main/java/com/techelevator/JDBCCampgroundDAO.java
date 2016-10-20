@@ -38,6 +38,7 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 					   "FROM campground cg " +
 					   "INNER JOIN park p ON p.park_id = cg.park_id " +
 					   "WHERE p.name = ?";
+
 		SqlRowSet results = jdbcTemplate.queryForRowSet(query, parkChoice);
 		while (results.next()) {
 			foundByName.add(saveDataAsCampground(results));
@@ -55,6 +56,15 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		return campground;
 	}
  
-	
+	public void displayCampgroundInfo(List<Campground> foundByName) {
+			for (Campground i: foundByName){
+				System.out.println(i.getName());
+				System.out.println(i.getId());
+				System.out.println(i.getOpenFrom());
+				System.out.println(i.getOpenTo());
+				System.out.println(i.getDailyFee());
+			}
+			
+	}
 	
 }

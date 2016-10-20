@@ -60,6 +60,8 @@ public class CampgroundCLI {
 				printHeading(parksInSystem);
 				String parkChoice = (String)menu.getChoiceFromOptions(parksInSystem);
 				campgroundDAO.findCampgroundByPark(parkChoice);
+				List<Campground> campgroundResults = campgroundDAO.findCampgroundByPark(parkChoice);
+				campgroundDAO.displayCampgroundInfo(campgroundResults);
 			}
 		}
 	}

@@ -74,7 +74,7 @@ public class JDBCDepartmentDAOIntegrationTest {
 		
 		Department savedDepartment = dao.createDepartment(departmentName);
 		Department foundDepartment = dao.getDepartmentById(savedDepartment.getId());
-		
+	
 		assertNotNull(foundDepartment);
 		assertEquals(savedDepartment.getId(), foundDepartment.getId());
 		assertEquals(savedDepartment.getName(), foundDepartment.getName());

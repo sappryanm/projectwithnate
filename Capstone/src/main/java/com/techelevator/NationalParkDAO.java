@@ -6,4 +6,6 @@ public interface NationalParkDAO {
 	
 	public List<NationalPark> getAllParksInSystem();
 	
+	
+	
 }

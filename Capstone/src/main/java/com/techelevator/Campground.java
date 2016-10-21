@@ -8,7 +8,11 @@ public class Campground {
 	private String openFrom;
 	private String openTo;
 	private BigDecimal dailyFee;
+	private int campgroundId;
 	
+	public int getCampgroundId() {
+		return campgroundId;
+	}
 	public int getId() {
 		return id;
 	}

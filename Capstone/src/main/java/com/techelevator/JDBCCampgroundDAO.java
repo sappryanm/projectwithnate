@@ -66,5 +66,23 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 			}
 			
 	}
+//	@Override
+//	public Campsite showCampsgroundName(int campgroundId) {
+//		Campsite campGround = new Campsite();
+//		
+//		String sqlAllCampsites = "SELECT * " +
+//								 "FROM campground " +
+//								 "WHERE campground_id = ?";
+//				
+//		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlAllCampsites, campgroundId);
+//		results.next();
+//		int campId = results.getInt("campground_id");
+//		String name = results.getString("name");
+//
+//		campGround.setCampgroundId(campId);
+//		campGround.setName(name);
+//
+//		return campGround;
+//	}
 	
 }

@@ -3,6 +3,7 @@ package com.techelevator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.sql.DataSource;
@@ -13,6 +14,8 @@ public class CampgroundCLI {
 
 	private NationalParkDAO nationalParkDAO;
 	private CampgroundDAO campgroundDAO;
+	private SiteSearchDAO siteSearchDAO;
+	private ReservationInsertDAO reservationInsertDAO;
 	private ParkMenu menu;
 	
 	private static final String MAIN_MENU_HEADING = "Welcome to the National Park Campground Finder";
@@ -21,6 +24,11 @@ public class CampgroundCLI {
 	private static final String MAIN_MENU_EXIT_APP = "Exit";
 	private static final String[] MAIN_MENU_OPTIONS = new String[] { MAIN_MENU_HEADING, MAIN_SEARCH_FOR_ALL_PARKS, MAIN_SEARCH_FOR_CAMPGROUNDS_BY_PARK, MAIN_MENU_EXIT_APP };
 
+	private static final String SITE_MENU_OPTIONS_SEARCH_FOR_AVAILABLE_RESERVATIONS = "Search for Available Options";
+	private static final String SITE_MENU_OPTIONS_RETURN_TO_CAMPSITE_INFO = "Return to Previous Screen";
+
+	private static final String[] SITE_MENU_OPTIONS = new String[] { SITE_MENU_OPTIONS_SEARCH_FOR_AVAILABLE_RESERVATIONS,
+																		SITE_MENU_OPTIONS_RETURN_TO_CAMPSITE_INFO };
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
@@ -62,17 +70,19 @@ public class CampgroundCLI {
 				campgroundDAO.findCampgroundByPark(parkChoice);
 				List<Campground> campgroundResults = campgroundDAO.findCampgroundByPark(parkChoice);
 				campgroundDAO.displayCampgroundInfo(campgroundResults);
+				
+				printHeading(SITE_MENU_OPTIONS);
+				String siteChoice = (String)menu.getChoiceFromOptions(SITE_MENU_OPTIONS);
+				if (choice == MAIN_SEARCH_FOR_ALL_PARKS) {
+					
+				}
 			}
+
 		}
 	}
 	
-	
-	 
-	
-	
-	
-	
-	
+
+
 	private void printHeading(String[] optionsMenu) {
 		System.out.println("\n" + optionsMenu[0]);
 		for(int i = 0; i < optionsMenu[0].length(); i++) {

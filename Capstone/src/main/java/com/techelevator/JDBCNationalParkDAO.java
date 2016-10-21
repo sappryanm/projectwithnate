@@ -41,5 +41,6 @@ public class JDBCNationalParkDAO implements NationalParkDAO {
 		park.setDescription(results.getString("description"));
 		return park;
 	}
+
 	
 }

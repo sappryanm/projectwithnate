@@ -98,12 +98,12 @@ public class JDBCReservationInsertDAO implements ReservationInsertDAO {
 		return r;
 	}
 
-	public List<Reservation> getReservationsBySiteId(int siteId) {
+	public List<Reservation> getReservationsBySiteId(int site_Id) {
 		ArrayList<Reservation> reservationList = new ArrayList<>();
 		String sqlGetReservationsBySiteId = "SELECT * " +
 									   "FROM reservation " +
 									   "WHERE site_id = ?";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetReservationsBySiteId, siteId);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetReservationsBySiteId, site_Id);
 		while (results.next()) {
 			Reservation r = new Reservation();
 			r.setReservation_id(results.getInt("reservation_id"));
@@ -111,15 +111,15 @@ public class JDBCReservationInsertDAO implements ReservationInsertDAO {
 			r.setName(results.getString("name"));
 			
 			Date fd = results.getDate("from_date");
-//			LocalDate fromDate = fd.toLocalDate();
+
 			r.setFrom_date(fd);
 			
 			Date td = results.getDate("to_date");
-//			LocalDate toDate = td.toLocalDate();
+
 			r.setTo_date(td);
 			
 			Date cd = results.getDate("create_date");
-//			LocalDate createDate = cd.toLocalDate();
+
 			r.setCreate_date(cd);
 			
 			reservationList.add(r);
@@ -146,7 +146,7 @@ public class JDBCReservationInsertDAO implements ReservationInsertDAO {
 
 	@Override
 	public int getCurrentReservationId() {
-		String sqlGetCurrentReservationId = "SELECT currval('reservation_reservation_id_seq')";
+		String sqlGetCurrentReservationId = "SELECT * FROM RESERVATION WHERE reservation_id = ?;";
 		SqlRowSet currentReservationId = jdbcTemplate.queryForRowSet(sqlGetCurrentReservationId);
 		if (currentReservationId.next()) {
 			System.out.println(currentReservationId);
@@ -157,7 +157,7 @@ public class JDBCReservationInsertDAO implements ReservationInsertDAO {
 	}
 	
 	private int getNextReservationId() {
-		SqlRowSet nextReservationId = jdbcTemplate.queryForRowSet("SELECT nextval('reservation_reservation_id_seq')");
+		SqlRowSet nextReservationId = jdbcTemplate.queryForRowSet("SELECT * FROM RESERVATION WHERE reservation_id = ?+1;");
 		if(nextReservationId.next()) {
 			System.out.println(nextReservationId.getInt(1));
 			return nextReservationId.getInt(1);
@@ -165,5 +165,15 @@ public class JDBCReservationInsertDAO implements ReservationInsertDAO {
 			throw new RuntimeException("Something went wrong getting the next reservation id.");
 		}
 	}
+
+
+	@Override
+	public List<Site> getAvailableSitesByCampground(int campgroundId, LocalDate arrivalDate, LocalDate departureDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 
 }

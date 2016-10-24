@@ -9,27 +9,28 @@ public class Site {
 		private boolean accessible;
 		private int max_rv_length;
 		private boolean utilities;
+		private Object[] toArray;
 		
 
-		public long getSite_id() {
+		public int getSite_id() {
 			return site_id;
 		}
 		public void setSite_id(int site_id) {
 			this.site_id = site_id;
 		}
-		public long getCampground_id() {
+		public int getCampground_id() {
 			return campground_id;
 		}
 		public void setCampground_id(int campground_id) {
 			this.campground_id = campground_id;
 		}
-		public long getSite_number() {
+		public int getSite_number() {
 			return site_number;
 		}
 		public void setSite_number(int siteNumber) {
 			this.site_number = siteNumber;
 		}
-		public long getMax_occupancy() {
+		public int getMax_occupancy() {
 			return max_occupancy;
 		}
 		public void setMax_occupancy(int maxOccupancy) {
@@ -41,7 +42,7 @@ public class Site {
 		public void setAccessible(boolean accessible) {
 			this.accessible = accessible;
 		}
-		public long getMax_rv_length() {
+		public int getMax_rv_length() {
 			return max_rv_length;
 		}
 		public void setMax_rv_length(int max_rv_length) {
@@ -52,6 +53,12 @@ public class Site {
 		}
 		public void setUtilities(boolean utilities) {
 			this.utilities = utilities;
+		}
+		public Object[] getToArray() {
+			return toArray;
+		}
+		public void setToArray(Object[] toArray) {
+			this.toArray = toArray;
 		}
 
 		

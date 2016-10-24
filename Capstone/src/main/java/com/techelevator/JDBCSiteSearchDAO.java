@@ -141,4 +141,27 @@ public class JDBCSiteSearchDAO implements SiteSearchDAO {
 		return availableSiteList;
 
 	}
+//	public Item getItem(String itemKey) {
+//		return itemMap.get(itemKey);
+//	}
+
+	@Override
+	public Site getSiteById(int site_Id) {
+		String sqlGetSiteById = "SELECT * " +
+								"FROM site "+
+								"WHERE site_id = ?";
+		SqlRowSet result = jdbcTemplate.queryForRowSet(sqlGetSiteById, site_Id);
+		Site s = new Site();
+		
+		if (result.next()) {
+			s.setSite_id(result.getInt("site_id"));
+			s.setCampground_id(result.getInt("campground_id"));
+			s.setSite_number(result.getInt("site_number"));
+			s.setMax_occupancy(result.getInt("max_occupancy"));
+			s.setAccessible(result.getBoolean("accessible"));
+			s.setMax_rv_length(result.getInt("max_rv_length"));
+			s.setUtilities(result.getBoolean("utilities"));
+		}
+		return s;
+	}
 }

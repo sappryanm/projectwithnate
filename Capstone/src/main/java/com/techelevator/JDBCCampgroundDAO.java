@@ -48,7 +48,7 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 	  
 	private Campground saveDataAsCampground(SqlRowSet results) {
 		Campground campground = new Campground();
-		campground.setId(results.getInt("park_id"));
+		campground.setParkId(results.getInt("park_id"));
 		campground.setName(results.getString("name"));
 		campground.setOpenFrom(results.getString("open_from_mm"));
 		campground.setOpenTo(results.getString("open_to_mm"));
@@ -58,13 +58,35 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
  
 	public void displayCampgroundInfo(List<Campground> foundByName) {
 			for (Campground i: foundByName){
-				System.out.println(i.getName());
-				System.out.println(i.getId());
-				System.out.println(i.getOpenFrom());
-				System.out.println(i.getOpenTo());
-				System.out.println(i.getDailyFee());
+				System.out.println("_________CampSite_______________");
+				System.out.println("name    " +i.getName());
+				System.out.println("ID    " +i.getParkId());
+				System.out.println("Begin Date     " +i.getOpenFrom());
+				System.out.println("Closing date   " +i.getOpenTo());
+				System.out.println("Fee   " +i.getDailyFee());
 			}
 			
+	}
+	@Override
+	public List<Campground> getCampgroundsByParkIdNoString(int parkId) {
+		ArrayList<Campground> campgroundList = new ArrayList<>();
+		String sqlSelectCampgroundsByParkId = "SELECT * "+
+												"FROM campground "+
+												"WHERE park_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSelectCampgroundsByParkId, parkId);
+		
+		while(results.next()) {
+			Campground c = new Campground();
+			c.setCampgroundId(results.getInt("campground_id"));
+			c.setParkId(results.getInt("park_id"));
+			c.setName(results.getString("name"));
+			c.setOpenFrom(results.getString("open_from_mm"));
+			c.setOpenTo(results.getString("open_to_mm"));
+			c.setDailyFee(results.getBigDecimal("daily_fee"));
+			
+			campgroundList.add(c);
+		}
+		return campgroundList;
 	}
 //	@Override
 //	public Campsite showCampsgroundName(int campgroundId) {

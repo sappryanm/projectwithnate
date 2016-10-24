@@ -9,4 +9,7 @@ public interface ReservationInsertDAO {
 	public Reservation getReservationById(int reservationId);
 	public void saveReservation(Reservation r);
 	int getCurrentReservationId();
+	public List<Site> getAvailableSitesByCampground(int campgroundId, LocalDate arrivalDate, LocalDate departureDate);
+//	public Reservation createReservation(int parseInt, String nameReserved, LocalDate arrivalDate,
+//			LocalDate departureDate);
 }

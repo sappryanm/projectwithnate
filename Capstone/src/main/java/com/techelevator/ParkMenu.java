@@ -23,6 +23,14 @@ public class ParkMenu {
 		}
 		return choice;
 	}
+	public CampgroundCLI getChoiceFromOptions(Object[] options) {
+		Object choice = null;
+		while(choice == null) {
+			displayMenuOptions(options);
+			choice = getChoiceFromUserInput(options);
+		}
+		return choice;
+	}
 
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
@@ -43,8 +51,10 @@ public class ParkMenu {
 
 	private void displayMenuOptions(Object[] options) {
 		out.println();
-		for(int i = 1; i < options.length; i++) {
-			out.println(i + ") " + options[i]);
+		for(int i = 0; i < options.length; i++) {
+			int optionNum = i+1;
+			out.println(optionNum+") "+options[i]);
+			//out.println(i + ") " + options[i]);
 		}
 		out.print("\nPlease choose an option >>> ");
 			out.flush();

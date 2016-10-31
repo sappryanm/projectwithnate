@@ -14,6 +14,9 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
+import com.techelevator.nationalpark.JDBCNationalParkDAO;
+import com.techelevator.nationalpark.NationalParkDAO;
+
 public class JDBCNationalParkDAOIntegrationTest {
 
 	/* Using this particular implementation of DataSource so that

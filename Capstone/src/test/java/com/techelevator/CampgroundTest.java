@@ -2,8 +2,12 @@ package com.techelevator;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import com.techelevator.campground.Campground;
 
 public class CampgroundTest {
 
@@ -20,13 +24,13 @@ public class CampgroundTest {
 		testCampground.setName("test");
 		testCampground.setOpenFrom("01");
 		testCampground.setOpenTo("12");
-		testCampground.setDailyFee(1.00);
+		testCampground.setDailyFee(new BigDecimal(1.00));
 		
 		int id = testCampground.getId();
 		String name = testCampground.getName();
 		String openDate = testCampground.getOpenFrom();
 		String closeDate = testCampground.getOpenTo();
-		double feeMoney = testCampground.getDailyFee(); 
+		BigDecimal feeMoney = testCampground.getDailyFee(); 
 	}
 	
 

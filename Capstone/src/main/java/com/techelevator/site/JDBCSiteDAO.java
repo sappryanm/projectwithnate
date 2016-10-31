@@ -1,5 +1,6 @@
 package com.techelevator.site;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,20 @@ public class JDBCSiteDAO implements SiteDAO {
 			sitesByCampground.add(saveDataAsSite(results));
 		}
 		return sitesByCampground;
+	}
+	
+	@Override
+	public BigDecimal getDailyFeeBySiteId(Site site) {
+		BigDecimal dailyFee = new BigDecimal(0);
+		String query  = "SELECT cg.daily_fee " +
+				        "FROM campground cg " +
+				        "INNER JOIN site s ON cg.campground_id = s.campground_id " +
+				        "WHERE s.site_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(query, site.getSiteId());
+		while (results.next()) {
+			dailyFee = results.getBigDecimal("daily_fee");
+		}
+		return dailyFee;
 	}
 	
 	@Override

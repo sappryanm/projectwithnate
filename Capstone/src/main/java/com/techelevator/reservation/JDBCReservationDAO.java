@@ -3,6 +3,7 @@ package com.techelevator.reservation;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.temporal.ChronoUnit;
 
 import javax.sql.DataSource;
 
@@ -61,6 +62,16 @@ public class JDBCReservationDAO implements ReservationDAO {
 			reservationsBySite.add(saveDataAsReservation(results));
 		}
 		return reservationsBySite;
+	}
+	
+	@Override
+	public long getLengthOfStay(Reservation reservation) {
+		return ChronoUnit.DAYS.between(reservation.getFromDate(), reservation.getToDate());
+	}
+	
+	@Override
+	public void finishReservation(List<Site> availableSites) {
+		
 	}
 
 	private Reservation saveDataAsReservation(SqlRowSet results) {

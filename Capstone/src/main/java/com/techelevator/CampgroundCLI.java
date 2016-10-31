@@ -1,6 +1,8 @@
 package com.techelevator;
 
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -92,25 +94,35 @@ public class CampgroundCLI {
 				}
 			}
 			else if (choice == MAIN_SEARCH_FOR_CAMPGROUND_AVAILABILITY) {
+//				choose park to search for campgrounds in
 				String[] parksInSystem = allParksToChoiceArray("Which park would you like to see the campgrounds for?");
 				printHeading(parksInSystem);
 				String parkChoice = (String)menu.getChoiceFromOptions(parksInSystem);
 				
+//				choose campground from those in the selected park
 				String[] campgroundsInPark = campgroundsByParkToChoiceArray(parkChoice, "Choose a campground to check availability for");
 				printHeading(campgroundsInPark);
 				String campgroundChoice = (String)menu.getChoiceFromOptions(campgroundsInPark);
+				
+//				since different campgrounds likely have different open and closed dates, get that campground
 				Campground campgroundToSearch = campgroundDAO.findCampgroundByName(campgroundChoice);
+				
+//				get date range for reservation, method ensures validity of inputs
 				LocalDate[] dateRange = getDateRange(campgroundToSearch);
+				
+//				begin building new reservation, with those dates
+				Reservation newReservation = new Reservation();
+				newReservation.setFromDate(dateRange[0]);
+				newReservation.setToDate(dateRange[1]);
 				
 //				first get list of all sites without reservations at all
 				List<Site> availableSites = siteDAO.searchForAllSitesWithNoReservations(campgroundToSearch);
 				
 //				if that is null, pulls in list of reservations by campground
 				if (availableSites.isEmpty()) {
-					Campground campground = campgroundDAO.findCampgroundByName(parkChoice);
-					availableSites = siteDAO.searchForSitesByCampground(campground);
-					LocalDate openDate = campgroundDAO.getOpenDate(dateRange[0], campground);
-					LocalDate closeDate = campgroundDAO.getCloseDate(dateRange[1], campground);
+					availableSites = siteDAO.searchForSitesByCampground(campgroundToSearch);
+					LocalDate openDate = campgroundDAO.getOpenDate(dateRange[0], campgroundToSearch);
+					LocalDate closeDate = campgroundDAO.getCloseDate(dateRange[1], campgroundToSearch);
 		
 					for (Site site : availableSites) {
 						List<Reservation> reservationList = reservationDAO.getAllReservationsBySite(site);
@@ -131,16 +143,23 @@ public class CampgroundCLI {
 					}	
 				}
 				
+				if (availableSites.isEmpty()) {
+					System.out.println("No sites found, please enter another date range");
+				}
+				
 				if (availableSites.size() < 5) {
 					for (int i = 0; i < availableSites.size(); i++) {
-						System.out.println(availableSites.get(i));						
+						printSiteInformation(availableSites.get(i), newReservation);				
 					}
 				}
 				else {
 					for (int i = 0; i < 5; i++) {
-						System.out.println((availableSites.get(i)).getSiteNumber());
+						printSiteInformation(availableSites.get(i), newReservation);
 					}
 				}
+				
+//				finish building out the reservation
+				reservationDAO.finishReservation(availableSites);
 			}
 			
 			else if (choice == MAIN_MENU_EXIT_APP) {
@@ -169,7 +188,7 @@ public class CampgroundCLI {
 		return choiceArray;
 	}
 	
-//	insures we will only get a valid date range
+//	ensures we will only get a valid date range
 	public LocalDate[] getDateRange(Campground campgroundToSearch) {
 		LocalDate[] dateRange = new LocalDate[2];
 		boolean fromIsValid = false;
@@ -218,13 +237,14 @@ public class CampgroundCLI {
 		}
 	}
 	
-	private void printSiteInformation(List<Site> availableSites) {
-		for (Site site : availableSites) {
-			System.out.println("Site number: " + site.getSiteNumber());
-			System.out.println("Length of stay: " + );
-			System.out.println("Cost for visit: " + );
-			System.out.println();
-		}
+	private void printSiteInformation(Site site, Reservation reservation) {
+		BigDecimal lengthOfStay = new BigDecimal(reservationDAO.getLengthOfStay(reservation));
+		Locale locale = new Locale("en", "US");
+		NumberFormat money = NumberFormat.getCurrencyInstance(locale);
+		System.out.println();
+		System.out.println("Site number: \t" + site.getSiteNumber());
+		System.out.println("Length of stay: " + lengthOfStay);
+		System.out.println("Cost for visit: " + money.format((siteDAO.getDailyFeeBySiteId(site)).multiply(lengthOfStay)));
 	}
 	 
 	private void printHeading(String[] optionsMenu) {

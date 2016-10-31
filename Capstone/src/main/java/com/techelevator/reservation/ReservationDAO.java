@@ -10,4 +10,6 @@ public interface ReservationDAO {
 	public List<Reservation> reservationListByCampground(Campground campground);
 	public List<Reservation> getAllReservationsBySite(Site site);
 	public boolean reservationAvailable(List<Reservation> reservationList, LocalDate[] dateRange);
+	public void finishReservation(List<Site> availableSites);
+	public long getLengthOfStay(Reservation reservation);
 }
